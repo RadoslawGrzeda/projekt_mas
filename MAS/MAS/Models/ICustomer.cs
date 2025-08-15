@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MAS.Models
+namespace MAS.Models.Person
 {
     public interface ICustomer
     {

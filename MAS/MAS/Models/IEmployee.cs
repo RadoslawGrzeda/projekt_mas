@@ -1,4 +1,4 @@
-﻿namespace MAS.Models
+﻿namespace MAS.Models.Person
 {
     public interface IEmployee
     {
