@@ -5,13 +5,21 @@ namespace MAS.Models
 {
     public class Person : IAdmin,ICustomer,IEmployee
     {
-       
 
+        [Required]
         public string name{ get; set; }
+        [Required]
+
         public string surname{ get; set; }
+        [Required]
+
         public DateOnly dateOdBirth { get; set; }
+        [Required,EmailAddress]
+
         public string email { get; set; }
+        [Phone]
         public int phoneNumber{ get; set; }
+        [Required]
         public PersonType personTypes { get; set; }
         public double? hourlyRate{ get; set; }
         //public List<Car>? numberOfPreparedCars{ get; set; }

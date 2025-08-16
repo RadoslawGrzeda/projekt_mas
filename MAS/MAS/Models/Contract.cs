@@ -6,6 +6,5 @@
         public DateOnly contractDate { get; set; }
         public double deposit { get; set; } 
 
-        publi
     }
 }
