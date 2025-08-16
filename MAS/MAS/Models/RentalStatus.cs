@@ -1,6 +1,8 @@
 ﻿namespace MAS.Models
 {
-    public class RentalStatus
+    public enum RentalStatus
     {
+        IN_PROGRESS  =1,
+        COMPLETED    =1<<1
     }
 }

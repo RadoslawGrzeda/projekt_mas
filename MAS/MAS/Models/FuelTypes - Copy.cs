@@ -1,11 +1,12 @@
-﻿namespace MAS.Models.Person
+﻿namespace MAS.Models
 {
     [Flags]
-    public enum PersonType
+    public enum BodyType
     {
         None      = 0,
-        Employee  = 1,
-        Customer  = 1<<1,
-        Admin     = 1<<2,
+        Van       = 1,
+        Suv       = 1<<1,
+        Cabriolet = 1<<2,
+        Sport     = 1<<3,
     }
 }

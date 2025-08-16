@@ -1,4 +1,4 @@
-﻿namespace MAS.Models.Person
+﻿namespace MAS.Models
 {
     [Flags]
     public enum PersonType
