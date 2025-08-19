@@ -12,7 +12,7 @@ namespace MAS.Data
         public DbSet<Engine> Engines { get; set; }
         public DbSet<Hybrid> HybridCars { get; set; }
         public DbSet<Electric> ElectricCars { get; set; }
-        public DbSet<InternalCombusion> InternalCombusionsCar { get; set; }
+        public DbSet<InternalCombusion> InternalCombusionsCars { get; set; }
         
         public DbSet<Contract> Contracts{ get; set; }
         public DbSet<Rental> Rentals { get; set; }
