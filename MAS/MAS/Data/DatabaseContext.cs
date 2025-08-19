@@ -8,6 +8,17 @@ namespace MAS.Data
     {
         public DbSet<Person> Persons { get; set; }
 
+
+        public DbSet<Engine> Engines { get; set; }
+        public DbSet<Hybrid> HybridCars { get; set; }
+        public DbSet<Electric> ElectricCars { get; set; }
+        public DbSet<InternalCombusion> InternalCombusionsCar { get; set; }
+        
+        public DbSet<Contract> Contracts{ get; set; }
+        public DbSet<Rental> Rentals { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<SatisfactionSurvey> SatisfactionSurveys { get; set; }
+        
         protected DatabaseContext() { }
 
         public DatabaseContext(DbContextOptions options) : base(options) { }

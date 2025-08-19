@@ -5,7 +5,8 @@ namespace MAS.Models
 {
     public class Person : IAdmin,ICustomer,IEmployee
     {
-
+        [Key]
+        public int personId { get; set; }
         [Required]
         public string name{ get; set; }
         [Required]
@@ -29,6 +30,10 @@ namespace MAS.Models
         public static int generateIdNumber = 1;
 
         public bool? drivingLicense { get; set; }
+
+        public ICollection<Reservation> reservations { get; set; } = null!;
+
+        public ICollection<Car> preparations { get; set; } = null!;
 
         public Person(string name, string surname, DateOnly dateOfBirt, string email, int phoneNumber, PersonType personTypes,
             double hourlyRate,bool drivingLicense2,string idNUmber

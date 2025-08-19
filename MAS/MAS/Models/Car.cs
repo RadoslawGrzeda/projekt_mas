@@ -7,7 +7,7 @@
         foldable   = 1<<1
     }
     public abstract class Car
-    {
+    {                             
         public BodyType BodyType { get; set; }
         public string brand { get; set; }
         public string model { get; set; }   
@@ -25,6 +25,8 @@
         public double deposit { get; set; }
         public string condition { get; set; }
         public double  mileage { get; set; }
+        public ICollection<Reservation>? reservations { get; set; }
+        public ICollection<Person>? prepared{ get; set; }
 
         public Car (BodyType bodyType,roofType roofType,int numberOfPassangers, string brand, string model, DateOnly productionYear, double? timeToGoundred, bool? drive4x4, bool? offRoad, double dailyRate, double deposit, string condition, double mileage)
         {
