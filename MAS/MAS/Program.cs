@@ -18,8 +18,20 @@ namespace MAS
             builder.Services.AddDbContext<DatabaseContext>(options =>
               options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
-            //builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<PersonService>();
+            builder.Services.AddScoped<PersonService>();
+
+            builder.Services.AddScoped<ReservationService>();
+            builder.Services.AddScoped<IReservationService>();
+
+            builder.Services.AddScoped<RentalService>();
+            builder.Services.AddScoped<IRentalService>();
+
+            builder.Services.AddHttpContextAccessor();
+
+
+
             //var app = builder.Build();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -31,6 +43,8 @@ namespace MAS
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
             else
             {
@@ -44,12 +58,14 @@ namespace MAS
 
             app.UseRouting();
 
+            //app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseAuthorization();
             app.MapControllers();
-            //app.MapControllerRoute(
-            //    name: "default",
-            //    pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

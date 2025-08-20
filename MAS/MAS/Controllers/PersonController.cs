@@ -38,6 +38,19 @@ namespace MAS.Controllers
             //return CreatedAtAction(nameof(GetById), new { id = newPerson.id }, newPerson);
         }
 
+        [HttpPost("make_reservation")]
+        public async Task<IActionResult> makeReservation(int carId, DateOnly startDate, int numberOfDays)
+        {
+            try
+            {
+                var reservation = await _personService.makeReservation(carId, startDate, numberOfDays);
+                return Ok(reservation);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
         //public IActionResult Index()
         //{
         //    return View();

@@ -2,7 +2,7 @@
 
 namespace MAS.Services
 {
-    public interface IPersonServicecs
+    public interface IPersonService
     {
           Task<Person> CreatePerson(Person person);
           Task<List<Person>> GetAllPerson();

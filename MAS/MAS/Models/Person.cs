@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography.X509Certificates;
 
 namespace MAS.Models
@@ -14,7 +15,7 @@ namespace MAS.Models
         public string surname{ get; set; }
         [Required]
 
-        public DateOnly dateOdBirth { get; set; }
+        public DateOnly dateOfBirth { get; set; }
         [Required,EmailAddress]
 
         public string email { get; set; }
@@ -25,6 +26,7 @@ namespace MAS.Models
         public double? hourlyRate{ get; set; }
         //public List<Car>? numberOfPreparedCars{ get; set; }
         public DateOnly? registrationDate{ get; set; }
+        [NotMapped]
         public string? id { get; }
         public string? idNumber { get; set; }
         public static int generateIdNumber = 1;
@@ -35,13 +37,15 @@ namespace MAS.Models
 
         public ICollection<Car> preparations { get; set; } = null!;
 
-        public Person(string name, string surname, DateOnly dateOfBirt, string email, int phoneNumber, PersonType personTypes,
-            double hourlyRate,bool drivingLicense2,string idNUmber
+        public Person() { }
+
+        public Person(string name, string surname, DateOnly dateOfBirth, string email, int phoneNumber, PersonType personTypes,
+            double hourlyRate,bool drivingLicense, string idNumber
             )
         { 
             this.name = name;
             this.surname = surname; 
-            this.dateOdBirth = dateOfBirt;
+            this.dateOfBirth = dateOfBirth;
             this.email = email;
             this.phoneNumber = phoneNumber;
             this.personTypes = personTypes;
@@ -53,10 +57,11 @@ namespace MAS.Models
             //Customer
             if (personTypes.HasFlag(PersonType.Customer))
             {
-                checkLicense(drivingLicense2);
+                checkLicense(drivingLicense);
                 this.registrationDate = DateOnly.FromDateTime(DateTime.Today);
                 this.id = generateId();
-                checkIdNumber(idNUmber);
+                //checkIdNumber(idNumber);
+            this.idNumber = idNumber;
             }
 
         }
@@ -69,26 +74,27 @@ namespace MAS.Models
         }
         public string generateId()
         {
-            return "PERSON/" + DateOnly.FromDateTime(DateTime.Today).Year + "/" + generateIdNumber;
-            generateIdNumber += 1;
+            string id = "PERSON/" + DateOnly.FromDateTime(DateTime.Today).Year + "/" + generateIdNumber;
+            generateIdNumber += 1; // Najpierw zwiększamy numer
+            return id;             // A potem zwracamy ID
         }
-        public void checkIdNumber(String idNumber)
-        {
-            IList<int> id1 = new List<int> { 48,49,50,51,52,53,54,55,56,57,58 };
-            this.idNumber = idNumber;
-            if (idNumber is null || idNumber.Length != 6)
-                throw new Exception("Is something wrong with your id number");
-            for (int i = 0; i < this.idNumber.Length; i++)
-            {
-                if (id1.Equals(this.idNumber[i]))
-                    throw new Exception("TEST");
-                Console.WriteLine(this.idNumber[i]);
-                //if (i < 3)
-                //{
-                //    if(idNumber)
-                //}
-            }
-        }
+        //public void checkIdNumber(String idNumber)
+        //{
+        //    IList<int> id1 = new List<int> { 48,49,50,51,52,53,54,55,56,57,58 };
+        //    this.idNumber = idNumber;
+        //    if (idNumber is null || idNumber.Length != 6)
+        //        throw new Exception("Is something wrong with your id number");
+        //    for (int i = 0; i < this.idNumber.Length; i++)
+        //    {
+        //        if (id1.Equals(this.idNumber[i]))
+        //            throw new Exception("TEST");
+        //        Console.WriteLine(this.idNumber[i]);
+        //        //if (i < 3)
+        //        //{
+        //        //    if(idNumber)
+        //        //}
+        //    }
+        //}
 
         public void assignEmployeeToCarPreparation()
         {
@@ -151,8 +157,8 @@ namespace MAS.Models
         public int getAge()
         {
             var today = DateOnly.FromDateTime(DateTime.Today);
-            int age=today.Year-dateOdBirth.Year ;
-            if (today.DayOfYear < dateOdBirth.DayOfYear)
+            int age=today.Year-dateOfBirth.Year ;
+            if (today.DayOfYear < dateOfBirth.DayOfYear)
                 age--;
             return age;
         }
