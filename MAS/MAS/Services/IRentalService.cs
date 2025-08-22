@@ -1,6 +1,6 @@
 ﻿namespace MAS.Services
 {
-    public class IRentalService
+    public interface IRentalService
     {
     }
 }

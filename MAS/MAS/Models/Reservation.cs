@@ -17,14 +17,22 @@ namespace MAS.Models
         
         public int personId { get; set; }
         public int carId { get; set; }
-
+        public int? rentalId { get; set; }
+        //public int? satisfactionSurveyId { get; set; }
 
         [ForeignKey(nameof(personId))]
         public Person customer { get; set; }=null!;
 
-
         [ForeignKey(nameof(carId))]
         public Car car { get; set; } = null!;
+
+
+        [ForeignKey(nameof(rentalId))]
+        public Rental? Rental{ get; set;}
+
+        //[ForeignKey(nameof(satisfactionSurveyId))]
+        public SatisfactionSurvey? satisfactionSurvey { get; set; }
+
 
         public void removeReservation()
         {

@@ -1,0 +1,19 @@
+﻿@{
+    var active = (string?)ViewBag.ActiveTab ?? "cars";
+}
+<div class="user">
+    <div class="avatar"></div>
+    <div>
+        <div class="user-name">Jan Nowak</div>
+        <div class="user-sub">Zrealizowanych rezerwacji: 10</div>
+    </div>
+</div>
+
+<nav class="menu">
+    <a asp-controller="Home" asp-action="Cars"
+       class="menu-item @(active == "cars" ? "active" : "")">🚗 Lista samochodów</a>
+    <a asp-controller="Home" asp-action="Reservations"
+       class="menu-item @(active == "reservations" ? "active" : "")">📒 Lista rezerwacji</a>
+    <a asp-controller="Home" asp-action="History"
+       class="menu-item @(active == "history" ? "active" : "")">⏰ Historia</a>
+</nav>

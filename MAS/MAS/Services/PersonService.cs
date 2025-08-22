@@ -4,6 +4,7 @@ using MAS.Models;
 using Microsoft.EntityFrameworkCore;
 
 using Microsoft.AspNetCore.Http;
+using System.Collections.ObjectModel;
 
 namespace MAS.Services
 {
@@ -55,11 +56,11 @@ namespace MAS.Services
             if (!person.hasRole(PersonType.Customer))
                 throw new InvalidOperationException("Only customers can make reservations.");
 
-            Car car = await _dbContext.HybridCars.FindAsync(carId);
-            if (car == null)
-                car = await _dbContext.InternalCombusionsCars.FindAsync(carId);
-            if (car == null)
-                car = await _dbContext.ElectricCars.FindAsync(carId);
+            Car car = await _dbContext.Cars.FindAsync(carId);
+            //if (car == null)
+            //    car = await _dbContext.InternalCombusionsCars.FindAsync(carId);
+            //if (car == null)
+            //    car = await _dbContext.ElectricCars.FindAsync(carId);
             if (car == null)
                 throw new InvalidOperationException("Car not found.");
 
@@ -87,8 +88,35 @@ namespace MAS.Services
             };
 
             _dbContext.Reservations.Add(reservation);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // to jest zwykle np. "23503: insert or update on table \"Reservations\" violates foreign key constraint ..."
+                var root = ex.GetBaseException().Message;
+                throw new Exception($"Save error: {root}", ex);
+            }
             return reservation;
         }
+
+        public async Task<List<Car>> showAvailableCars(DateOnly startDate,int numberOfDays)
+        {
+            if (numberOfDays <= 0) 
+                throw new ArgumentException("Days must be > 0");
+        var end = startDate.AddDays(numberOfDays - 1);
+
+    return await _dbContext.Cars
+        .AsNoTracking()
+        .Where(c => !_dbContext.Reservations.Any(r =>
+            r.carId == c.id &&
+            (r.reservationStatus == ReservationStatus.inProgress ||
+             r.reservationStatus == ReservationStatus.scheduled) &&
+            r.dateOfReservation <= end &&
+            r.dateOfReservation.AddDays(r.numberOfDays - 1) >= startDate
+        ))
+        .ToListAsync();
     }
+}
 }

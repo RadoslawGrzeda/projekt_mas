@@ -1,4 +1,6 @@
 ﻿using MAS.Models;
+using System;
+using System.Collections.ObjectModel;
 
 namespace MAS.Services
 {
@@ -9,8 +11,9 @@ namespace MAS.Services
 
         //Customer
         Task<Reservation> makeReservation(int carId, DateOnly startDate, int numberOfDays);
-
+        Task <List<Car>> showAvailableCars(DateOnly startDate, int numberOfDays);
     }
+
 
 
 }

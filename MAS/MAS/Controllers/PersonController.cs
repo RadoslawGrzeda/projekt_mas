@@ -51,6 +51,14 @@ namespace MAS.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("showAvailableCars")]
+        public async Task<IActionResult> GetAvailableCars([FromQuery] DateOnly startDate, [FromQuery] int numberOfDays)
+        {
+            if (numberOfDays <= 0) return BadRequest("Days must be > 0");
+            var cars = await _personService.showAvailableCars(startDate, numberOfDays);
+            var dto = cars.Select(c => (c.id, c.brand, c.model, c.dailyRate));
+            return Ok(dto);
+        }
         //public IActionResult Index()
         //{
         //    return View();

@@ -8,26 +8,18 @@ namespace MAS.Models
     {
         [Key]
         public int personId { get; set; }
-        [Required]
         public string name{ get; set; }
-        [Required]
 
         public string surname{ get; set; }
-        [Required]
 
-        public DateOnly dateOfBirth { get; set; }
-        [Required,EmailAddress]
-
+        public DateTime dateOfBirth { get; set; }
         public string email { get; set; }
-        [Phone]
-        public int phoneNumber{ get; set; }
-        [Required]
+        public string phoneNumber{ get; set; }
         public PersonType personTypes { get; set; }
         public double? hourlyRate{ get; set; }
         //public List<Car>? numberOfPreparedCars{ get; set; }
-        public DateOnly? registrationDate{ get; set; }
-        [NotMapped]
-        public string? id { get; }
+        public DateTime? registrationDate{ get; set; }
+        public string? id { get; set; }
         public string? idNumber { get; set; }
         public static int generateIdNumber = 1;
 
@@ -39,7 +31,7 @@ namespace MAS.Models
 
         public Person() { }
 
-        public Person(string name, string surname, DateOnly dateOfBirth, string email, int phoneNumber, PersonType personTypes,
+        public Person(string name, string surname, DateTime dateOfBirth, string email, string phoneNumber, PersonType personTypes,
             double hourlyRate,bool drivingLicense, string idNumber
             )
         { 
@@ -58,7 +50,7 @@ namespace MAS.Models
             if (personTypes.HasFlag(PersonType.Customer))
             {
                 checkLicense(drivingLicense);
-                this.registrationDate = DateOnly.FromDateTime(DateTime.Today);
+                this.registrationDate = DateTime.Now;
                 this.id = generateId();
                 //checkIdNumber(idNumber);
             this.idNumber = idNumber;

@@ -4,7 +4,8 @@ namespace MAS.Services
 {
     public interface ICarService
     {
-        Task<Car>createCar(Car car);
+        Task<List<Car>>? showCars();
+        Task<Action>createCar(Car car);
         
 
     }

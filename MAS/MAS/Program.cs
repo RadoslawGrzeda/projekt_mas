@@ -3,7 +3,7 @@ using MAS.Models;
 using MAS.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
-
+using System.Security.Claims;
 namespace MAS
 {
     public class Program
@@ -19,14 +19,30 @@ namespace MAS
               options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection")));
 
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddScoped<PersonService>();
-            builder.Services.AddScoped<PersonService>();
+            //builder.Services.AddScoped<IPersonService>();
 
             builder.Services.AddScoped<ReservationService>();
-            builder.Services.AddScoped<IReservationService>();
+            //builder.Services.AddScoped<IReservationService>();
 
             builder.Services.AddScoped<RentalService>();
-            builder.Services.AddScoped<IRentalService>();
+            //builder.Services.AddScoped<IRentalService>();
+
+            builder.Services.AddScoped<CarService>();
+            //builder.Services.AddScoped<ICarService>();
+
+
+            builder.Services.AddScoped<IPersonService, PersonService>();
+            //builder.Services.AddScoped<IReservationService, ReservationService>();
+            //builder.Services.AddScoped<IRentalService, RentalService>();
+            builder.Services.AddScoped<ICarService, CarService>();
+
+            builder.Services.AddDbContext<DatabaseContext>(opt => opt
+    .UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"))
+    .EnableDetailedErrors()
+    .EnableSensitiveDataLogging());
+
 
             builder.Services.AddHttpContextAccessor();
 
@@ -57,7 +73,24 @@ namespace MAS
             //app.UseStaticFiles();
 
             app.UseRouting();
-
+            if (app.Environment.IsDevelopment())
+            {
+                app.Use(async (ctx, next) =>
+                {
+                    if (ctx.User?.Identity?.IsAuthenticated != true)
+                    {
+                        var claims = new[]
+                        {
+                new Claim(ClaimTypes.Name, "jan.nowak@example.com"),
+                new Claim("personId", "1"),           // << USTAW ID ISTNIEJ¥CEJ OSOBY W DB
+                new Claim(ClaimTypes.Role, "Customer")
+            };
+                        var identity = new ClaimsIdentity(claims, "DevAuth");
+                        ctx.User = new ClaimsPrincipal(identity);
+                    }
+                    await next();
+                });
+            }
             //app.UseDefaultFiles();
             app.UseStaticFiles();
 
@@ -65,7 +98,7 @@ namespace MAS
             app.MapControllers();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Cars}/{id?}");
 
             app.Run();
         }

@@ -1,4 +1,6 @@
-﻿namespace MAS.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace MAS.Models
 {
     public enum roofType
     {
@@ -7,11 +9,13 @@
         foldable   = 1<<1
     }
     public abstract class Car
-    {                             
+    {
+        [Key]
+        public int id { get; set; }
         public BodyType BodyType { get; set; }
         public string brand { get; set; }
         public string model { get; set; }   
-        public DateOnly productionYear { get; set; }
+        public DateTime productionYear { get; set; }
         public roofType roofType { get; set; }
         public int numberOfPassangers { get; set; }
 
@@ -28,7 +32,8 @@
         public ICollection<Reservation>? reservations { get; set; }
         public ICollection<Person>? prepared{ get; set; }
 
-        public Car (BodyType bodyType,roofType roofType,int numberOfPassangers, string brand, string model, DateOnly productionYear, double? timeToGoundred, bool? drive4x4, bool? offRoad, double dailyRate, double deposit, string condition, double mileage)
+        public Car() { }
+        public Car (BodyType bodyType,roofType roofType,int numberOfPassangers, string brand, string model, DateTime productionYear, double? timeToGoundred, bool? drive4x4, bool? offRoad, double dailyRate, double deposit, string condition, double mileage)
         {
             BodyType = bodyType;
             this.brand = brand;

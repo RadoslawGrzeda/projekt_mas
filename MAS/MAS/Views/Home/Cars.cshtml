@@ -1,0 +1,51 @@
+﻿@model CarBrowseVm
+@{
+    ViewData["Title"] = "Lista samochodów";
+}
+<h2>Lista samochodów</h2>
+
+<partial name="_Alerts" />
+<
+<form asp-action="CarsSearch" method="post" class="filter">
+    @Html.AntiForgeryToken()
+    <div class="field">
+        <label asp-for="StartDate"></label>
+        <input asp-for="StartDate" type="date" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="field">
+        <label asp-for="NumberOfDays"></label>
+        <input asp-for="NumberOfDays" type="number" min="1" />
+        <span asp-validation-for="NumberOfDays" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn primary">Filtruj</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <p class="muted">@Model.Message</p>
+}
+
+<div class="cards">
+    @foreach (var c in Model.Cars)
+    {
+        <div class="card">
+            <div class="car-name">@c.Brand @c.Model</div>
+            <div class="car-meta">
+                <div>Koszt: @c.DailyRate.ToString("0") zł/dzień</div>
+                <div>Kaucja: @c.Deposit.ToString("0") zł</div>
+            </div>
+            <form asp-action="CarsReserve" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="carId" value="@c.Id" />
+                <input type="hidden" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" />
+                <input type="hidden" name="numberOfDays" value="@Model.NumberOfDays" />
+                <button type="submit" class="btn danger">Rezerwuj</button>
+            </form>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
